@@ -21,6 +21,12 @@ if [ "$ARCHITECTURE" == "armhf" ]; then
     DEFAULT_MIRROR_SECURITY_URLS=http://deb.debian.org/debian-security/,http://packages.trafficmanager.net/debian/debian-security/
 fi
 
+# EOL releases: the trafficmanager.net mirrors no longer serve them, use archive.debian.org
+if [[ "$DISTRIBUTION" =~ ^(jessie|stretch|buster|bullseye)$ ]]; then
+    DEFAULT_MIRROR_URLS=http://archive.debian.org/debian/
+    DEFAULT_MIRROR_SECURITY_URLS=http://archive.debian.org/debian-security/
+fi
+
 if [ "$MIRROR_SNAPSHOT" == y ]; then
     if [ -f "$MIRROR_VERSION_FILE" ]; then
         DEBIAN_TIMESTAMP=$(grep "^debian==" $MIRROR_VERSION_FILE | tail -n 1 | sed 's/.*==//')
