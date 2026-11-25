@@ -80,6 +80,10 @@ RUN PATH=/python_virtualenv/env3/bin/:$PATH python3 -m pip uninstall -y enum34
 RUN PATH=/python_virtualenv/env3/bin/:$PATH pip3 install --force-reinstall --no-cache-dir coverage
 {%- endif %}
 
+# Base image ships an old debian-archive-keyring (2019.1) without bullseye keys
+RUN apt-get -o Acquire::AllowInsecureRepositories=true update; \
+    apt-get install -y --allow-unauthenticated debian-archive-keyring
+
 RUN apt-get update && apt-get install -y \
         apt-utils \
         default-jre-headless \
@@ -609,9 +613,7 @@ RUN pip3 install m2crypto==0.36.0
 RUN pip3 install git+https://github.com/aristanetworks/swi-tools.git@bead66bf261770237f7dd21ace3774ba04a017e9
 
 {% if CONFIGURED_ARCH != "amd64" -%}
-# Install node.js for azure pipeline
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
+# node.js (azure pipeline only) skipped: NodeSource 14.x repo is no longer verifiable
 
 {%- if CROSS_BUILD_ENVIRON == "y" %}
 RUN apt-get install -y rsync dh-python
