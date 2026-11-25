@@ -1,0 +1,15 @@
+SONIC_CONFIG_BUILD_JOBS = 8
+SONIC_CONFIG_MAKE_JOBS = 8
+PLATFORM = centec-arm64
+PLATFORM_ARCH = arm64
+SONIC_BUILD_JOBS = 8
+
+BUILD_SKIP_TEST = y
+SONIC_DPKG_CACHE_METHOD = rwcache
+
+MIRROR_URLS = http://archive.debian.org/debian/
+MIRROR_SECURITY_URLS = http://archive.debian.org/debian-security/
+
+# FIPS artifacts on sonicstorage.blob.core.windows.net now return HTTP 403
+ENABLE_FIPS_FEATURE = n
+ENABLE_FIPS = n
